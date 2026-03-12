@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Share Weekly Roster – Vets Ladies Golf Club</title>
+  <meta name="description" content="Load and share the weekly roster with the golf course." />
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container header-inner">
+
+      <div class="header-left">
+        <a class="brand" href="index.html" aria-label="Game Captain home">
+          <img
+            src="assets/img/logo.png"
+            alt="Vets Ladies Golf Club logo"
+            class="brand-logo"
+          />
+          <span class="brand-name">Vets Ladies Golf Club</span>
+        </a>
+
+        <a
+          class="btn btn-secondary public-btn"
+          href="https://vetsladiesgolfclub-members.pages.dev/"
+        >
+          Member site
+        </a>
+      </div>
+
+      <nav class="nav" aria-label="Game Captain navigation">
+        <button
+          class="nav-toggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="nav-menu"
+        >
+          Menu
+        </button>
+
+        <ul id="nav-menu" class="nav-menu">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="roster-share.html" aria-current="page">Share Roster</a></li>
+          <li><a href="results-entry.html">Enter Results</a></li>
+          <li><a href="results-share.html">Share Results</a></li>
+
+          <li class="nav-divider" role="separator" aria-hidden="true"></li>
+
+          <li><a href="responsibilities.html">Game Captain Responsibilities</a></li>
+          <li><a href="captain-schedule.html">Game Captain Schedule</a></li>
+          <li><a href="instructions.html">Instructions &amp; Help</a></li>
+        </ul>
+      </nav>
+
+    </div>
+  </header>
+
+  <main id="main">
+
+    <section class="section">
+      <div class="container">
+        <h1>Share Weekly Roster</h1>
+        <p class="lead">
+          Load the weekly roster and send it to the golf course before game day.
+        </p>
+        <p>
+          Select a game date, preview the roster, and then share it by email.
+          Any last-minute adjustments can be made directly in your email before sending.
+        </p>
+      </div>
+    </section>
+
+    <section class="section section-alt">
+      <div class="container">
+        <h2>Select Week</h2>
+        <p class="muted">
+          Available dates will be pulled from the club schedule.
+        </p>
+
+        <form class="tool-form" id="rosterForm" action="#" method="get">
+          <div class="form-row">
+            <label for="rosterDate">Game date</label>
+            <select id="rosterDate" class="input" aria-label="Select game date">
+              <option value="">Select a date</option>
+            </select>
+          </div>
+
+          <div class="tool-actions">
+            <button type="button" class="btn" id="loadRosterBtn">
+              Load Roster
+            </button>
+
+            <a
+              class="btn btn-secondary"
+              id="shareRosterBtn"
+              href="#"
+              aria-disabled="true"
+            >
+              Share via Email
+            </a>
+          </div>
+
+          <p class="muted">
+            Load the roster first so you can review it before sharing.
+          </p>
+        </form>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <h2>Roster Preview</h2>
+
+        <div id="rosterPreview" class="card preview-card" aria-live="polite">
+          <p class="muted"><strong>Status:</strong> No roster loaded yet.</p>
+          <p>
+            Select a game date and click <strong>Load Roster</strong> to preview
+            the roster before sharing it with the course.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-alt">
+      <div class="container">
+        <h2>Before You Share</h2>
+
+        <ul class="bullets">
+          <li>Confirm the correct game date is selected.</li>
+          <li>Review the roster before sending it to the course.</li>
+          <li>Make any last-minute adjustments directly in your email if needed.</li>
+          <li>Late cancellations should still be communicated directly to the course.</li>
+        </ul>
+
+        <p class="muted">
+          Need help? Visit the
+          <a href="instructions.html">Instructions &amp; Help</a>
+          page.
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <small>© <span id="year"></span> Vets Ladies Golf Club</small>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script src="js/roster-share.js" defer></script>
+  
+</body>
+</html>

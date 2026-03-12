@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Share Results – Vets Ladies Golf Club</title>
+  <meta name="description" content="Review and share weekly results for Vets Ladies Golf Club." />
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container header-inner">
+
+      <div class="header-left">
+        <a class="brand" href="index.html" aria-label="Game Captain home">
+          <img
+            src="assets/img/logo.png"
+            alt="Vets Ladies Golf Club logo"
+            class="brand-logo"
+          />
+          <span class="brand-name">Vets Ladies Golf Club</span>
+        </a>
+
+        <a
+          class="btn btn-secondary public-btn"
+          href="https://vetsladiesgolfclub-members.pages.dev/"
+        >
+          Member site
+        </a>
+      </div>
+
+      <nav class="nav" aria-label="Game Captain navigation">
+        <button
+          class="nav-toggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="nav-menu"
+        >
+          Menu
+        </button>
+
+        <ul id="nav-menu" class="nav-menu">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="roster.html">Share Roster</a></li>
+          <li><a href="results-entry.html">Enter Results</a></li>
+          <li><a href="results-share.html" aria-current="page">Share Results</a></li>
+
+          <li class="nav-divider" role="separator" aria-hidden="true"></li>
+
+          <li><a href="responsibilities.html">Game Captain Responsibilities</a></li>
+          <li><a href="captain-schedule.html">Game Captain Schedule</a></li>
+          <li><a href="instructions.html">Instructions &amp; Help</a></li>
+
+          <li class="nav-divider" role="separator" aria-hidden="true"></li>
+
+          <li>
+            <a class="nav-link nav-logout" href="#">
+              Log out
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="section">
+      <div class="container">
+        <h1>Share Results</h1>
+        <p class="lead">
+          Review weekly results and prepare them to share with the club.
+        </p>
+        <p>
+          Use this page after results have been entered and checked. The preview below
+          will eventually pull from the saved weekly results for the selected date.
+        </p>
+      </div>
+    </section>
+
+    <section class="section section-alt">
+      <div class="container">
+        <h2>Select Week</h2>
+
+        <form class="tool-form" action="#" method="get">
+          <div class="form-row">
+            <label for="results-date">Game date</label>
+            <select id="results-date" class="input">
+              <option value="">Select a date</option>
+              <option>Mar 18 – Low Putts</option>
+              <option>Mar 25 – Scramble</option>
+              <option>Apr 1 – Sweeps</option>
+            </select>
+          </div>
+
+          <div class="tool-actions">
+            <button type="button" class="btn">Load Results</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <h2>Results Preview</h2>
+
+        <div class="card preview-card">
+          <p class="muted"><strong>Status:</strong> Preview placeholder</p>
+
+          <div class="results-preview-block">
+            <p><strong>Mar 18 – Low Putts</strong></p>
+            <p class="muted">Results entered and ready to review.</p>
+
+            <hr class="tool-divider" />
+
+            <p><strong>1st</strong> – Player Name – Score – $0.00</p>
+            <p><strong>2nd</strong> – Player Name – Score – $0.00</p>
+            <p><strong>3rd</strong> – Player Name – Score – $0.00</p>
+
+            <hr class="tool-divider" />
+
+            <p><strong>Pot Awards</strong></p>
+            <ul class="bullets">
+              <li>Low putts – Player Name</li>
+              <li>KP #6 – Player Name</li>
+              <li>KP #13 – Player Name</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-alt">
+      <div class="container">
+        <h2>Share Options</h2>
+
+        <div class="cards">
+          <article class="card">
+            <h3>Copy Results</h3>
+            <p>
+              Copy the results text and paste it into an email, announcement, or other message.
+            </p>
+            <p>
+              <button type="button" class="btn">Copy Results</button>
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Share by Email</h3>
+            <p>
+              Open your email app with the weekly results ready to review and send.
+            </p>
+            <p>
+              <a class="btn" href="#">Share Results</a>
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>View Member Results</h3>
+            <p>
+              Open the member-facing results page to confirm what club members will see.
+            </p>
+            <p>
+              <a class="btn btn-secondary" href="https://vetsladiesgolfclub-members.pages.dev/results.html" target="_blank" rel="noopener noreferrer">
+                Open Results Page
+              </a>
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <h2>Before You Share</h2>
+
+        <ul class="bullets">
+          <li>Confirm the correct game date is selected.</li>
+          <li>Double-check names, placements, and winnings.</li>
+          <li>Make sure results have been finalized before sharing broadly.</li>
+        </ul>
+
+        <p class="muted">
+          Need help? Visit the
+          <a href="instructions.html">Instructions &amp; Help</a>
+          page.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <small>© <span id="year"></span> Vets Ladies Golf Club</small>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
