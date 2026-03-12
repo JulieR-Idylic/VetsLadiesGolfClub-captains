@@ -66,38 +66,34 @@
         <p class="lead">
           Game Captain assignments and seasonal coverage.
         </p>
-        <p>
-          This page can be used to show which Game Captain is assigned to each date,
-          along with any backup or officer coverage.
-        </p>
       </div>
     </section>
 
     <section class="section section-alt">
-      <div class="container">
-        <h2>Schedule Placeholder</h2>
+        <div class="container">
+            <h2>2026 Game Captain Schedule</h2>
 
-        <div class="card preview-card">
-          <p class="muted"><strong>Status:</strong> Stub page</p>
-          <p>
-            Add the 2026 Game Captain schedule here. This could remain simple static
-            content, or later be pulled from the schedule workbook if that becomes useful.
-          </p>
+            <div class="table-wrap">
+            <table class="results-table">
+                <thead>
+                <tr>
+                    <th>Month</th>
+                    <th>Game Captain</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                </tr>
+                </thead>
+
+                <tbody id="gcScheduleBody">
+                <tr>
+                    <td colspan="4">Loading schedule...</td>
+                </tr>
+                </tbody>
+
+            </table>
+            </div>
+
         </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="container">
-        <h2>Suggested Content</h2>
-
-        <ul class="bullets">
-          <li>Game date</li>
-          <li>Assigned Game Captain</li>
-          <li>Backup or officer coverage</li>
-          <li>Any notes for special games or scrambles</li>
-        </ul>
-      </div>
     </section>
   </main>
 
@@ -108,5 +104,6 @@
   </footer>
 
   <script src="js/main.js"></script>
+  <script src="js/gc-schedule.js"></script>
 </body>
 </html>
