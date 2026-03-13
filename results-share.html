@@ -7,6 +7,7 @@
   <meta name="description" content="Review and share weekly results for Vets Ladies Golf Club." />
   <meta name="robots" content="noindex, nofollow" />
   <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/results.css" />
 </head>
 
 <body>
@@ -68,113 +69,106 @@
     </div>
   </header>
 
-  <main id="main">
-    <section class="section">
-      <div class="container">
-        <h1>Share Results</h1>
-        <p class="lead">
-          Review weekly results and prepare them to share with the club.
-        </p>
-        <p>
-          Use this page after results have been entered and checked. The preview below
-          will eventually pull from the saved weekly results for the selected date.
-        </p>
+  <main class="container results-page" id="main">
+  <header class="page-head">
+    <h1>Share Results</h1>
+    <p class="muted">
+      Review weekly results and share them by email.
+    </p>
+  </header>
+
+  <section class="results-controls" aria-label="Results controls">
+    <div class="segmented" role="tablist" aria-label="Select holes">
+      <button
+        class="seg-btn is-active"
+        type="button"
+        data-holes="18"
+        role="tab"
+        aria-selected="true"
+      >
+        18 holes
+      </button>
+
+      <button
+        class="seg-btn"
+        type="button"
+        data-holes="9"
+        role="tab"
+        aria-selected="false"
+      >
+        9 holes
+      </button>
+    </div>
+
+    <label class="week-picker">
+      <span class="label">Week</span>
+      <select id="weekSelect" aria-label="Select week">
+        <option value="">Loading schedule...</option>
+      </select>
+    </label>
+  </section>
+
+  <section class="results-summary" aria-label="Selected week summary">
+    <div class="summary-head">
+      <div>
+        <h2 id="weekHeading" class="week-title">—</h2>
+        <p id="weekSubhead" class="muted">—</p>
+        <p id="captainContact" class="muted">—</p>
       </div>
-    </section>
 
-    <section class="section section-alt">
-      <div class="container">
-        <h2>Select Week</h2>
+      <div class="summary-actions">
+        <button
+          id="shareResultsBtn"
+          class="btn btn-secondary"
+          type="button"
+        >
+          Share Results
+        </button>
 
-        <form class="tool-form" action="#" method="get">
-          <div class="form-row">
-            <label for="results-date">Game date</label>
-            <select id="results-date" class="input">
-              <option value="">Select a date</option>
-              <option>Mar 18 – Low Putts</option>
-              <option>Mar 25 – Scramble</option>
-              <option>Apr 1 – Sweeps</option>
-            </select>
-          </div>
-
-          <div class="tool-actions">
-            <button type="button" class="btn">Load Results</button>
-          </div>
-        </form>
+        <button
+          id="toggleDetails"
+          class="btn btn-secondary"
+          aria-expanded="false"
+          disabled
+          type="button"
+        >
+          View full results
+        </button>
       </div>
-    </section>
+    </div>
 
-    <section class="section">
-      <div class="container">
-        <h2>Results Preview</h2>
+    <div id="winnerCards" class="winner-cards" aria-label="Top finishers"></div>
 
-        <div class="card preview-card">
-          <p class="muted"><strong>Status:</strong> Preview placeholder</p>
-
-          <div class="results-preview-block">
-            <p><strong>Mar 18 – Low Putts</strong></p>
-            <p class="muted">Results entered and ready to review.</p>
-
-            <hr class="tool-divider" />
-
-            <p><strong>1st</strong> – Player Name – Score – $0.00</p>
-            <p><strong>2nd</strong> – Player Name – Score – $0.00</p>
-            <p><strong>3rd</strong> – Player Name – Score – $0.00</p>
-
-            <hr class="tool-divider" />
-
-            <p><strong>Pot Awards</strong></p>
-            <ul class="bullets">
-              <li>Low putts – Player Name</li>
-              <li>KP #6 – Player Name</li>
-              <li>KP #13 – Player Name</li>
-            </ul>
-          </div>
-        </div>
+    <div id="detailsPanel" class="details is-collapsed" aria-label="Full results">
+      <div class="table-wrap">
+        <table class="results-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th class="num">HCP</th>
+              <th class="num">Gross</th>
+              <th class="num">Adj</th>
+              <th class="num">Net</th>
+              <th class="num">Place</th>
+              <th class="num">Payout</th>
+            </tr>
+          </thead>
+          <tbody id="resultsTbody"></tbody>
+        </table>
       </div>
-    </section>
+    </div>
 
-    <section class="section section-alt">
-      <div class="container">
-        <h2>Share Options</h2>
+    <div id="emptyState" class="empty-state is-hidden" role="status">
+      No results found for the selected week.
+    </div>
 
-        <div class="cards">
-          <article class="card">
-            <h3>Copy Results</h3>
-            <p>
-              Copy the results text and paste it into an email, announcement, or other message.
-            </p>
-            <p>
-              <button type="button" class="btn">Copy Results</button>
-            </p>
-          </article>
+    <div id="errorState" class="empty-state is-hidden" role="alert">
+      Couldn’t load results. Please try again later.
+    </div>
+  </section>
 
-          <article class="card">
-            <h3>Share by Email</h3>
-            <p>
-              Open your email app with the weekly results ready to review and send.
-            </p>
-            <p>
-              <a class="btn" href="#">Share Results</a>
-            </p>
-          </article>
-
-          <article class="card">
-            <h3>View Member Results</h3>
-            <p>
-              Open the member-facing results page to confirm what club members will see.
-            </p>
-            <p>
-              <a class="btn btn-secondary" href="https://vetsladiesgolfclub-members.pages.dev/results.html" target="_blank" rel="noopener noreferrer">
-                Open Results Page
-              </a>
-            </p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
+  <!-- THIS SECTION IS UNIQUE TO THE CAPTAIN AREA -->
+  <section class="section">
       <div class="container">
         <h2>Before You Share</h2>
 
@@ -191,7 +185,40 @@
         </p>
       </div>
     </section>
-  </main>
+</main>
+
+<!--This section creates the modal window with preview of results and action buttons  -->
+  <div id="shareModal" class="share-modal" hidden>
+    <div class="share-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="shareModalTitle">
+        <div class="share-modal__header">
+        <h2 id="shareModalTitle">Share Results</h2>
+        <button type="button" class="btn btn-ghost" id="shareModalClose">Close</button>
+        </div>
+
+        <p class="muted">
+            To preserve formatting, first copy the formatted results. Then open your email and paste them into the message body.
+        </p>
+
+        <div class="form-row" style="max-width: 260px;">
+        <label for="shareScope">Share</label>
+        <select id="shareScope" class="input">
+            <option value="both" selected>18-hole and 9-hole</option>
+            <option value="18">18-hole only</option>
+            <option value="9">9-hole only</option>
+        </select>
+        </div>
+
+        <div class="tool-actions">
+            <button type="button" class="btn btn-secondary" id="copyHtmlBtn">Copy Formatted Results</button>
+            <button type="button" class="btn btn-secondary" id="sendEmailBtn">Open Email</button>
+            <button type="button" class="btn btn-ghost" id="shareModalCancel">Close</button>
+        </div>
+
+        <p id="shareStatus" class="muted" aria-live="polite"></p>
+
+        <div id="sharePreview" class="share-preview"></div>
+    </div>
+  </div>
 
   <footer class="site-footer">
     <div class="container">
@@ -199,6 +226,8 @@
     </div>
   </footer>
 
+  <script src="js/results-core.js"></script>
+  <script src="js/results-share.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>
