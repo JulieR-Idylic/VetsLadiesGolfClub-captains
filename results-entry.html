@@ -4,9 +4,10 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Enter Results – Vets Ladies Golf Club</title>
-  <meta name="description" content="Enter weekly game results for Vets Ladies Golf Club." />
+  <meta name="description" content="Enter and publish weekly game results for Vets Ladies Golf Club." />
   <meta name="robots" content="noindex, nofollow" />
   <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/results.css" />
 </head>
 
 <body>
@@ -44,60 +45,204 @@
         </button>
 
         <ul id="nav-menu" class="nav-menu">
-          <li><a href="index.html">Game Captain Home</a></li>
-          <li><a href="roster-share.html">Share Roster</a></li>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="roster.html">Share Roster</a></li>
           <li><a href="results-entry.html" aria-current="page">Enter Results</a></li>
           <li><a href="results-share.html">Share Results</a></li>
 
           <li class="nav-divider" role="separator" aria-hidden="true"></li>
 
-          <li><a href="instructions.html">Instructions &amp; Help</a></li>
+          <li><a href="responsibilities.html">Game Captain Responsibilities</a></li>
           <li><a href="gc-schedule.html">Game Captain Schedule</a></li>
+          <li><a href="instructions.html">Instructions &amp; Help</a></li>
+
+          <li class="nav-divider" role="separator" aria-hidden="true"></li>
+
+          <li>
+            <a class="nav-link nav-logout" href="#">
+              Log out
+            </a>
+          </li>
         </ul>
       </nav>
 
     </div>
   </header>
 
-  <main id="main">
-    <section class="section">
-      <div class="container">
-        <h1>Enter Results</h1>
-        <p class="lead">
-          Enter weekly scores and results for the selected game date.
-        </p>
-        <p>
-          This page will be used to load the roster, enter scores, and save results
-          in a consistent format for later sharing and display.
-        </p>
-      </div>
-    </section>
+  <main class="container results-page" id="main">
+    <header class="page-head">
+      <h1>Enter Results</h1>
+      <p class="muted">
+        Create a new draft, continue saved work, or re-open published results for editing.
+      </p>
+      <p class="muted">
+        Changes are saved as a draft first. Results do not appear on the member site until they are published.
+      </p>
+    </header>
 
-    <section class="section section-alt">
-      <div class="container">
-        <h2>Coming Soon</h2>
-
-        <div class="card preview-card">
-          <p class="muted"><strong>Status:</strong> Stub page</p>
-          <p>
-            Results entry has not been connected yet. In a future phase, this page
-            will allow Game Captains to load the roster and enter weekly results
-            without using the spreadsheet directly.
-          </p>
+    <section class="results-summary" aria-label="Results entry workflow">
+      <div class="summary-head">
+        <div>
+          <h2 class="week-title">Results Workflow</h2>
+          <p class="muted">Select a game date to begin.</p>
         </div>
       </div>
+
+      <div class="results-controls" aria-label="Results entry controls">
+        <label class="week-picker">
+          <span class="label">Game date</span>
+          <select id="resultsDateSelect" aria-label="Select game date">
+            <option value="">Loading dates...</option>
+          </select>
+        </label>
+      </div>
+
+      <div id="statusArea" class="empty-state is-hidden" role="status" aria-live="polite">
+        <p id="resultsEntryStatusMessage">Select a date to begin.</p>
+      </div>
+
+      <div id="actionArea" class="tool-actions is-hidden" aria-label="Available actions">
+        <!-- Action buttons injected by JS -->
+      </div>
     </section>
+
+    <section id="entrySection" class="results-summary is-hidden" aria-label="Results draft entry">
+      <div class="summary-head">
+        <div>
+          <h2 id="entryFormTitle" class="week-title">Draft Entry</h2>
+          <p id="entryFormSubtext" class="muted">
+            Load a draft to begin entering results.
+          </p>
+        </div>
+
+        <div class="summary-actions">
+          <button
+            id="saveDraftBtn"
+            class="btn btn-secondary"
+            type="button"
+            disabled
+          >
+            Save Draft
+          </button>
+
+          <button
+            id="publishResultsBtn"
+            class="btn"
+            type="button"
+            disabled
+          >
+            Publish
+          </button>
+        </div>
+      </div>
+
+      <div class="results-entry-meta">
+        <div class="form-row">
+          <label for="entryGameCaptain">Game Captain</label>
+          <input
+            id="entryGameCaptain"
+            class="input"
+            type="text"
+            name="entryGameCaptain"
+            autocomplete="name"
+            placeholder="Enter Game Captain name"
+          />
+        </div>
+
+        <div class="form-row">
+          <label for="entryDateDisplay">Date</label>
+          <input
+            id="entryDateDisplay"
+            class="input"
+            type="text"
+            name="entryDateDisplay"
+            readonly
+          />
+        </div>
+
+        <div class="form-row">
+          <label for="entryGameDisplay">Game</label>
+          <input
+            id="entryGameDisplay"
+            class="input"
+            type="text"
+            name="entryGameDisplay"
+            readonly
+          />
+        </div>
+      </div>
+
+      <div class="tool-actions">
+        <button
+          id="addPlayerRowBtn"
+          class="btn btn-secondary"
+          type="button"
+          disabled
+        >
+          Add Player Row
+        </button>
+
+        <button
+          id="startOverBtn"
+          class="btn btn-secondary is-hidden"
+          type="button"
+        >
+          Start Over from Roster
+        </button>
+      </div>
+
+      <div id="feedbackSection" class="is-hidden" aria-label="Entry feedback">
+        <p class="muted" style="margin: 0 0 0.35rem 0;"><strong>Game Captain Message</strong></p>
+        <div id="resultsEntryFeedbackMessage" class="empty-state" role="status" aria-live="polite">
+          <!-- Feedback injected by JS -->
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table class="results-table results-entry-table results-entry-grid">
+          <thead>
+            <tr>
+              <th>Action</th>
+              <th>Name</th>
+              <th>Holes</th>
+              <th>Flight</th>
+              <th class="num">Gross</th>
+              <th class="num">Adjustment</th>
+              <th class="num">Adj Gross</th>
+              <th class="num">Handicap</th>
+              <th class="num">Net</th>
+              <th>Payout Type</th>
+              <th class="num">Place</th>
+              <th class="num">Winnings</th>
+            </tr>
+          </thead>
+          <tbody id="resultsEntryTableBody">
+            <!-- Draft rows injected by JS -->
+          </tbody>
+        </table>
+      </div>
+
+      <div id="entryEmptyState" class="empty-state" role="status">
+        No draft is currently loaded.
+      </div>
+    </section>
+
 
     <section class="section">
       <div class="container">
-        <h2>Planned Workflow</h2>
+        <h2>Before You Publish</h2>
 
         <ul class="bullets">
-          <li>Select the game date.</li>
-          <li>Load the roster for that week.</li>
-          <li>Enter scores and winnings.</li>
-          <li>Save results in the club’s standard format.</li>
+          <li>Confirm the correct game date is selected.</li>
+          <li>Double-check names, holes, scores, payouts, and placements.</li>
+          <li>Remember that the member site will continue showing the published version until you publish again.</li>
         </ul>
+
+        <p class="muted">
+          Need help? Visit the
+          <a href="instructions.html">Instructions &amp; Help</a>
+          page.
+        </p>
       </div>
     </section>
   </main>
@@ -108,6 +253,8 @@
     </div>
   </footer>
 
+  <script src="js/results-core.js"></script>
+  <script src="js/results-entry.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>

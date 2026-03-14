@@ -1,6 +1,3 @@
-// const SCHEDULE_API_BASE =
-//   "https://script.google.com/macros/s/AKfycbxDkUJ-PCc92K-dV9ywfuf_SK6FoEGmR3xSIe84XGwA5V_6W5iVTlm4fc4CM6RCJt8Y3g/exec";
-
 const RESULTS_API_BASE =
   "https://script.google.com/macros/s/AKfycbximdmeQ6IHZW3rUT9c-mg8VHA2LcBDIyKMqcC5-hLZIXcU6-LW1-jMWZTSwAS8z-XbgQ/exec";
 
