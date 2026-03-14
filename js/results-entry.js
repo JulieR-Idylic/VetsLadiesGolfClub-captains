@@ -329,6 +329,22 @@
 
       showFeedback("New draft loaded from roster.", false);
     } catch (err) {
+      if (isNoRosterFoundError(err)) {
+        const draft = makeBlankDraftWithoutRoster(state.selectedDate);
+
+        state.workingDraft = deepClone(draft);
+        state.dirty = false;
+
+        renderWorkingDraft({
+          title: "New Draft Entry",
+          subtext: "No roster was found for this date. Add players manually to build the draft.",
+          showStartOver: false
+        });
+
+        showFeedback("No roster was found for this date. A blank draft has been opened so you can add players manually.", false);
+        return;
+      }
+
       console.error(err);
       showFeedback(err.message || "Could not create a new draft from the roster.", true);
     }
@@ -409,6 +425,22 @@
 
       showFeedback("Draft reset from roster.", false);
     } catch (err) {
+      if (isNoRosterFoundError(err)) {
+        const draft = makeBlankDraftWithoutRoster(state.selectedDate);
+
+        state.workingDraft = deepClone(draft);
+        state.dirty = false;
+
+        renderWorkingDraft({
+          title: "New Draft Entry",
+          subtext: "No roster was found for this date. Add players manually to rebuild the draft.",
+          showStartOver: false
+        });
+
+        showFeedback("No roster was found for this date. The draft has been reset to a blank manual draft.", false);
+        return;
+      }
+
       console.error(err);
       showFeedback(err.message || "Could not reset the draft from the roster.", true);
     }
@@ -433,6 +465,23 @@
     }
 
     return json;
+  }
+
+  function isNoRosterFoundError(err) {
+    const msg = String(err?.message || err || "").toLowerCase();
+    return msg.includes("no roster") || msg.includes("no players") || msg.includes("not found");
+  }
+
+  function makeBlankDraftWithoutRoster(dateISO) {
+    const sched = getScheduleForDate(dateISO);
+    const game = getGameForDate(dateISO);
+
+    return {
+      source: "manual",
+      gameCaptain: getCaptainNameFromSchedule(sched) || "",
+      game: asStr(game?.name),
+      rows: []
+    };
   }
 
   function rosterResponseToDraft(rosterData, dateISO) {
@@ -522,11 +571,8 @@
 
     renderRows(state.workingDraft.rows || []);
 
-    els.entryEmptyState.textContent = "";
-    hide(els.entryEmptyState);
-    els.saveDraftBtn.disabled = false;
-    els.publishResultsBtn.disabled = false;
     if (els.addPlayerRowBtn) els.addPlayerRowBtn.disabled = false;
+    syncDraftActionButtons();
 
     if (showStartOver) {
       show(els.startOverBtn);
@@ -535,6 +581,12 @@
     }
 
     show(els.entrySection);
+  }
+
+  function syncDraftActionButtons() {
+    const hasRows = !!(state.workingDraft && Array.isArray(state.workingDraft.rows) && state.workingDraft.rows.length);
+    els.saveDraftBtn.disabled = !hasRows;
+    els.publishResultsBtn.disabled = !hasRows;
   }
 
   function clearEntrySection() {
@@ -705,6 +757,7 @@
     state.dirty = true;
 
     renderRows(state.workingDraft.rows);
+    syncDraftActionButtons();
     showFeedback("Blank player row added.", false);
   }
 
@@ -716,6 +769,7 @@
     state.dirty = true;
 
     renderRows(state.workingDraft.rows);
+    syncDraftActionButtons();
     showFeedback("Player row removed.", false);
   }
 
