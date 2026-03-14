@@ -188,6 +188,7 @@
     els.statusMessage.textContent = "";
     els.actionArea.innerHTML = "";
     els.feedbackMessage.textContent = "";
+    els.feedbackMessage.classList.remove("is-error");
 
     els.entryFormTitle.textContent = "Draft Entry";
     els.entryFormSubtext.textContent = "Load a draft to begin entering results.";
@@ -847,7 +848,45 @@
     return json;
   }
 
-  function onPublish() {
+  async function publishDraftToApi(payload) {
+    const res = await fetch(`${RESULTS_API_BASE}?mode=publish`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8"
+      },
+      body: JSON.stringify(payload)
+    });
+
+    if (!res.ok) {
+      throw new Error(`Publish failed: ${res.status}`);
+    }
+
+    const json = await res.json();
+
+    if (!json?.ok) {
+      throw new Error(json?.error || "Could not publish results.");
+    }
+
+    return json;
+  }
+
+  function resetAfterPublish(result) {
+    const publishedAt = result?.publishedAt ? ` (${result.publishedAt})` : "";
+    const rowCount = Number(result?.rowCount || 0);
+    const statusText = rowCount
+      ? `Results published${publishedAt}. ${rowCount} row${rowCount === 1 ? "" : "s"} published.`
+      : `Results published${publishedAt}.`;
+
+    if (els.dateSelect) {
+      els.dateSelect.value = "";
+    }
+
+    resetWorkflow();
+    els.statusMessage.textContent = statusText;
+    show(els.statusArea);
+  }
+
+  async function onPublish() {
     if (!state.selectedDate || !state.workingDraft) {
       showFeedback("No draft is currently loaded.", true);
       return;
@@ -857,27 +896,38 @@
 
     const normalizedDraft = normalizeDraftForSave(state.workingDraft, state.selectedDate);
 
-    STUB_PUBLISHED_BY_DATE[state.selectedDate] = deepClone(normalizedDraft);
+    if (!normalizedDraft.rows.length) {
+      showFeedback("There are no rows to publish.", true);
+      return;
+    }
 
-    console.log("AUDIT Publish", {
-      date: state.selectedDate,
-      gameCaptain: normalizedDraft.gameCaptain || "",
-      action: "Publish",
-      timestamp: new Date().toISOString()
-    });
+    const ok = window.confirm(
+      "Publish results for this date? This will replace any previously published results."
+    );
+    if (!ok) return;
 
-    STUB_STATE_BY_DATE[state.selectedDate] = {
-      status: "both",
-      message: "Published results and a draft both exist for this date."
-    };
+    clearFeedback();
 
-    state.workingDraft = deepClone(normalizedDraft);
-    state.dirty = false;
-    showFeedback("Results published. The member site would now show the published version.", false);
-    renderStatusAndActions({
-        status: "both",
-        message: "Published results and a draft both exist for this date."
-    });
+    try {
+      showFeedback("Publishing results...", false);
+
+      const result = await publishDraftToApi({
+        date: state.selectedDate,
+        gameCaptain: normalizedDraft.gameCaptain || ""
+      });
+
+      STUB_PUBLISHED_BY_DATE[state.selectedDate] = deepClone(normalizedDraft);
+      delete STUB_DRAFT_BY_DATE[state.selectedDate];
+      STUB_STATE_BY_DATE[state.selectedDate] = {
+        status: "published",
+        message: "Published results already exist for this date."
+      };
+
+      resetAfterPublish(result);
+    } catch (err) {
+      console.error(err);
+      showFeedback(err.message || "Could not publish results.", true);
+    }
   }
 
   function normalizeDraftForSave(draft, dateISO) {
