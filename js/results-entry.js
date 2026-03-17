@@ -111,6 +111,15 @@
     dirty: false
   };
 
+  function setFieldValue(el, value) {
+    if (!el) return;
+    if ("value" in el) {
+      el.value = value || "";
+    } else {
+      el.textContent = value || "";
+    }
+  }
+
   async function init() {
     if (!els.dateSelect) return;
 
@@ -192,9 +201,9 @@
 
     els.entryFormTitle.textContent = "Draft Entry";
     els.entryFormSubtext.textContent = "Load a draft to begin entering results.";
-    els.entryGameCaptain.value = "";
-    els.entryDateDisplay.value = "";
-    els.entryGameDisplay.value = "";
+    setFieldValue(els.entryGameCaptain, "");
+    setFieldValue(els.entryDateDisplay, "");
+    setFieldValue(els.entryGameDisplay, "");
     els.resultsEntryTableBody.innerHTML = "";
     els.entryEmptyState.textContent = "No draft is currently loaded.";
     show(els.entryEmptyState);
@@ -218,8 +227,8 @@
     clearFeedback();
 
     if (!value) {
-        resetWorkflow();
-        return;
+      resetWorkflow();
+      return;
     }
 
     state.selectedDate = value;
@@ -230,48 +239,48 @@
     showFeedback("Checking saved state...", false);
 
     try {
-        const result = await fetchEntryStateForDate(value);
-        renderStatusAndActions(result);
-        clearFeedback();
+      const result = await fetchEntryStateForDate(value);
+      renderStatusAndActions(result);
+      clearFeedback();
     } catch (err) {
-        console.error(err);
-        showFeedback(err.message || "Could not check saved state for this date.", true);
+      console.error(err);
+      showFeedback(err.message || "Could not check saved state for this date.", true);
     }
   }
 
   async function fetchEntryStateForDate(dateISO) {
     const res = await fetch(
-        `${RESULTS_API_BASE}?mode=entrystate&date=${encodeURIComponent(dateISO)}`,
-        { cache: "no-store" }
+      `${RESULTS_API_BASE}?mode=entrystate&date=${encodeURIComponent(dateISO)}`,
+      { cache: "no-store" }
     );
 
     if (!res.ok) {
-        throw new Error(`State fetch failed: ${res.status}`);
+      throw new Error(`State fetch failed: ${res.status}`);
     }
 
     const json = await res.json();
 
     if (!json?.ok) {
-        throw new Error(json?.error || "Could not load saved state.");
+      throw new Error(json?.error || "Could not load saved state.");
     }
 
     let status = "none";
     let message = "No data exists for this date.";
 
     if (json.hasDraft && json.hasPublished) {
-        status = "both";
-        message = "Published results and a draft both exist for this date.";
+      status = "both";
+      message = "Published results and a draft both exist for this date.";
     } else if (json.hasDraft) {
-        status = "draft";
-        message = "A draft already exists for this date.";
+      status = "draft";
+      message = "A draft already exists for this date.";
     } else if (json.hasPublished) {
-        status = "published";
-        message = "Published results already exist for this date.";
+      status = "published";
+      message = "Published results already exist for this date.";
     }
 
     return {
-        status,
-        message
+      status,
+      message
     };
   }
 
@@ -351,35 +360,35 @@
     }
   }
 
-    async function handleOpenDraft() {
-        if (!state.selectedDate) return;
+  async function handleOpenDraft() {
+    if (!state.selectedDate) return;
 
-        clearFeedback();
-        showFeedback("Loading saved draft...", false);
+    clearFeedback();
+    showFeedback("Loading saved draft...", false);
 
-        try {
-            const draft = await fetchDraftForDate(state.selectedDate);
+    try {
+      const draft = await fetchDraftForDate(state.selectedDate);
 
-            if (!draft.rows.length) {
-            showFeedback("No saved draft rows were found for this date.", true);
-            return;
-            }
+      if (!draft.rows.length) {
+        showFeedback("No saved draft rows were found for this date.", true);
+        return;
+      }
 
-            state.workingDraft = deepClone(draft);
-            state.dirty = false;
+      state.workingDraft = deepClone(draft);
+      state.dirty = false;
 
-            renderWorkingDraft({
-            title: "Draft Entry",
-            subtext: "Editing saved draft. Changes will not affect the member site until published.",
-            showStartOver: true
-            });
+      renderWorkingDraft({
+        title: "Draft Entry",
+        subtext: "Editing saved draft. Changes will not affect the member site until published.",
+        showStartOver: true
+      });
 
-            showFeedback("Draft loaded.", false);
-        } catch (err) {
-            console.error(err);
-            showFeedback(err.message || "Could not open the saved draft for this date.", true);
-        }
+      showFeedback("Draft loaded.", false);
+    } catch (err) {
+      console.error(err);
+      showFeedback(err.message || "Could not open the saved draft for this date.", true);
     }
+  }
 
   function handleOpenPublished() {
     const published = STUB_PUBLISHED_BY_DATE[state.selectedDate];
@@ -501,43 +510,43 @@
 
   async function fetchDraftForDate(dateISO) {
     const res = await fetch(
-        `${RESULTS_API_BASE}?mode=draft&date=${encodeURIComponent(dateISO)}`,
-        { cache: "no-store" }
+      `${RESULTS_API_BASE}?mode=draft&date=${encodeURIComponent(dateISO)}`,
+      { cache: "no-store" }
     );
 
     if (!res.ok) {
-        throw new Error(`Draft fetch failed: ${res.status}`);
+      throw new Error(`Draft fetch failed: ${res.status}`);
     }
 
     const json = await res.json();
 
     if (!json?.ok) {
-        throw new Error(json?.error || "No saved draft was returned.");
+      throw new Error(json?.error || "No saved draft was returned.");
     }
 
     const game = getGameForDate(dateISO);
     const sched = getScheduleForDate(dateISO);
 
     return {
-        source: "draft",
-        gameCaptain: getCaptainNameFromSchedule(sched) || "",
-        game: asStr(game?.name),
-        rows: (Array.isArray(json.rows) ? json.rows : []).map((row) =>
+      source: "draft",
+      gameCaptain: getCaptainNameFromSchedule(sched) || "",
+      game: asStr(game?.name),
+      rows: (Array.isArray(json.rows) ? json.rows : []).map((row) =>
         makeRow(
-            asStr(row.Date) || dateISO,
-            asStr(row.Holes),
-            asStr(row.Name),
-            asStr(row.Flight),
-            asStr(row.Gross),
-            asStr(row.Adjustment),
-            asStr(row.AdjGross),
-            asStr(row.Handicap),
-            asStr(row.Net),
-            asStr(row.PayoutType),
-            asStr(row.Place),
-            asStr(row.Winnings)
+          asStr(row.Date) || dateISO,
+          asStr(row.Holes),
+          asStr(row.Name),
+          asStr(row.Flight),
+          asStr(row.Gross),
+          asStr(row.Adjustment),
+          asStr(row.AdjGross),
+          asStr(row.Handicap),
+          asStr(row.Net),
+          asStr(row.PayoutType),
+          asStr(row.Place),
+          asStr(row.Winnings)
         )
-        )
+      )
     };
   }
 
@@ -559,16 +568,33 @@
     return raw.split("|")[0].trim();
   }
 
+  function sortDraftRows(rows) {
+    return [...(rows || [])].sort((a, b) => {
+      const holesA = Number(a?.holes || 0);
+      const holesB = Number(b?.holes || 0);
+
+      // 18-hole rows first
+      if (holesA !== holesB) return holesB - holesA;
+
+      const nameA = String(a?.name || "").trim().toLowerCase();
+      const nameB = String(b?.name || "").trim().toLowerCase();
+
+      return nameA.localeCompare(nameB);
+    });
+  }
+
   function renderWorkingDraft({ title, subtext, showStartOver }) {
     if (!state.workingDraft) return;
 
     els.entryFormTitle.textContent = title;
     els.entryFormSubtext.textContent = subtext;
-    els.entryGameCaptain.value = state.workingDraft.gameCaptain || "";
-    els.entryDateDisplay.value = state.selectedDateLabel || state.selectedDate;
-    els.entryGameDisplay.value = state.workingDraft.game || "";
+    setFieldValue(els.entryGameCaptain, state.workingDraft.gameCaptain || "");
+    setFieldValue(els.entryDateDisplay, state.selectedDateLabel || state.selectedDate);
+    setFieldValue(els.entryGameDisplay, state.workingDraft.game || "");
 
-    state.workingDraft.rows = (state.workingDraft.rows || []).map((row) => ensureRowShape(row, state.selectedDate));
+    state.workingDraft.rows = sortDraftRows(
+      (state.workingDraft.rows || []).map((row) => ensureRowShape(row, state.selectedDate))
+    );
 
     renderRows(state.workingDraft.rows || []);
 
@@ -581,6 +607,8 @@
       hide(els.startOverBtn);
     }
 
+    hide(els.actionArea);
+    hide(els.statusArea);
     show(els.entrySection);
   }
 
@@ -594,9 +622,9 @@
     hide(els.entrySection);
     els.entryFormTitle.textContent = "Draft Entry";
     els.entryFormSubtext.textContent = "Load a draft to begin entering results.";
-    els.entryGameCaptain.value = "";
-    els.entryDateDisplay.value = "";
-    els.entryGameDisplay.value = "";
+    setFieldValue(els.entryGameCaptain, "");
+    setFieldValue(els.entryDateDisplay, "");
+    setFieldValue(els.entryGameDisplay, "");
     els.resultsEntryTableBody.innerHTML = "";
     els.entryEmptyState.textContent = "No draft is currently loaded.";
     show(els.entryEmptyState);
@@ -620,94 +648,76 @@
     hide(els.entryEmptyState);
 
     els.resultsEntryTableBody.innerHTML = rows
-    .map((row, index) => {
+      .map((row, index) => {
         const safeName = row.name || `row ${index + 1}`;
         return `
         <tr data-row-index="${index}">
-            <td>
+          <td data-label="Action">
             <button type="button"
-                class="btn btn-secondary btn-compact js-row-remove"
-                aria-label="Remove ${escapeHtml(safeName)}">
-                Remove
+              class="btn btn-secondary btn-compact js-row-remove"
+              aria-label="Remove ${escapeHtml(safeName)}">
+              Remove
             </button>
-            </td>
+          </td>
 
-            <td>
+          <td data-label="Name">
             <input class="results-grid-input js-row-name" type="text"
-                aria-label="Name for row ${index + 1}"
-                value="${escapeHtml(row.name)}" />
-            </td>
+              aria-label="Name for row ${index + 1}"
+              value="${escapeHtml(row.name)}" />
+          </td>
 
-            <td>
+          <td data-label="Holes">
             <select class="results-grid-input js-row-holes"
-                aria-label="Holes for ${escapeHtml(safeName)}">
-                <option value="18" ${row.holes === "18" ? "selected" : ""}>18</option>
-                <option value="9" ${row.holes === "9" ? "selected" : ""}>9</option>
+              aria-label="Holes for ${escapeHtml(safeName)}">
+              <option value="18" ${row.holes === "18" ? "selected" : ""}>18</option>
+              <option value="9" ${row.holes === "9" ? "selected" : ""}>9</option>
             </select>
-            </td>
+          </td>
 
-            <td>
-            <input class="results-grid-input js-row-flight" type="text"
-                aria-label="Flight for ${escapeHtml(safeName)}"
-                value="${escapeHtml(row.flight)}" />
-            </td>
-
-            <td class="num">
-            <input class="results-grid-input js-row-gross" type="text" inputmode="decimal"
-                aria-label="Gross for ${escapeHtml(safeName)}"
-                value="${escapeHtml(row.gross)}" />
-            </td>
-
-            <td class="num">
-            <input class="results-grid-input js-row-adjustment" type="text" inputmode="decimal"
-                aria-label="Adjustment for ${escapeHtml(safeName)}"
-                value="${escapeHtml(row.adjustment)}" />
-            </td>
-
-            <td class="num">
+          <td data-label="Adj Gross">
             <input class="results-grid-input js-row-adjgross" type="text" inputmode="decimal"
-                aria-label="Adjusted gross for ${escapeHtml(safeName)}"
-                value="${escapeHtml(row.adjGross)}" />
-            </td>
+              aria-label="Adjusted gross for ${escapeHtml(safeName)}"
+              value="${escapeHtml(row.adjGross)}" />
+          </td>
 
-            <td class="num">
+          <td data-label="Handicap">
             <input class="results-grid-input js-row-handicap" type="text" inputmode="decimal"
-                aria-label="Handicap for ${escapeHtml(safeName)}"
-                value="${escapeHtml(row.handicap)}" />
-            </td>
+              aria-label="Handicap for ${escapeHtml(safeName)}"
+              value="${escapeHtml(row.handicap)}" />
+          </td>
 
-            <td class="num">
+          <td data-label="Net">
             <input class="results-grid-input js-row-net" type="text" inputmode="decimal"
-                aria-label="Net for ${escapeHtml(safeName)}"
-                value="${escapeHtml(row.net)}" />
-            </td>
+              aria-label="Net for ${escapeHtml(safeName)}"
+              value="${escapeHtml(row.net)}" />
+          </td>
 
-            <td>
+          <td data-label="Payout Type">
             <select class="results-grid-input js-row-payouttype"
-                aria-label="Payout type for ${escapeHtml(safeName)}">
-                <option value="" ${row.payoutType === "" ? "selected" : ""}></option>
-                <option value="Gross" ${row.payoutType === "Gross" ? "selected" : ""}>Gross</option>
-                <option value="Net" ${row.payoutType === "Net" ? "selected" : ""}>Net</option>
-                <option value="Putts" ${row.payoutType === "Putts" ? "selected" : ""}>Putts</option>
+              aria-label="Payout type for ${escapeHtml(safeName)}">
+              <option value="" ${row.payoutType === "" ? "selected" : ""}></option>
+              <option value="Gross" ${row.payoutType === "Gross" ? "selected" : ""}>Gross</option>
+              <option value="Net" ${row.payoutType === "Net" ? "selected" : ""}>Net</option>
+              <option value="Putts" ${row.payoutType === "Putts" ? "selected" : ""}>Putts</option>
             </select>
-            </td>
+          </td>
 
-            <td class="num">
+          <td data-label="Place">
             <input class="results-grid-input js-row-place" type="text" inputmode="numeric"
-                aria-label="Place for ${escapeHtml(safeName)}"
-                value="${escapeHtml(row.place)}" />
-            </td>
+              aria-label="Place for ${escapeHtml(safeName)}"
+              value="${escapeHtml(row.place)}" />
+          </td>
 
-            <td class="num">
+          <td data-label="Winnings">
             <input class="results-grid-input js-row-winnings" type="text" inputmode="decimal"
-                aria-label="Winnings for ${escapeHtml(safeName)}"
-                value="${escapeHtml(row.winnings)}" />
-            </td>
+              aria-label="Winnings for ${escapeHtml(safeName)}"
+              value="${escapeHtml(row.winnings)}" />
+          </td>
 
         </tr>
         `;
-    })
-    .join("");
+      })
+      .join("");
 
     bindRowInputs();
   }
@@ -720,15 +730,26 @@
 
       bindRowField(tr, idx, ".js-row-name", "name", "input");
       bindRowField(tr, idx, ".js-row-holes", "holes", "change");
-      bindRowField(tr, idx, ".js-row-flight", "flight", "input");
-      bindRowField(tr, idx, ".js-row-gross", "gross", "input");
-      bindRowField(tr, idx, ".js-row-adjustment", "adjustment", "input");
       bindRowField(tr, idx, ".js-row-adjgross", "adjGross", "input");
       bindRowField(tr, idx, ".js-row-handicap", "handicap", "input");
       bindRowField(tr, idx, ".js-row-net", "net", "input");
       bindRowField(tr, idx, ".js-row-payouttype", "payoutType", "change");
       bindRowField(tr, idx, ".js-row-place", "place", "input");
       bindRowField(tr, idx, ".js-row-winnings", "winnings", "input");
+
+      const winningsEl = tr.querySelector(".js-row-winnings");
+      if (winningsEl) {
+        winningsEl.addEventListener("keydown", (event) => {
+          if (event.key !== "Tab" || event.shiftKey) return;
+          const nextTr = tr.nextElementSibling;
+          if (!nextTr) return;
+          const nextName = nextTr.querySelector(".js-row-name");
+          if (!nextName) return;
+          event.preventDefault();
+          nextName.focus();
+          nextName.select?.();
+        });
+      }
 
       const removeBtn = tr.querySelector(".js-row-remove");
       removeBtn.addEventListener("click", () => {
@@ -813,13 +834,10 @@
 
       state.workingDraft = deepClone(draftToSave);
       state.dirty = false;
+      hide(els.actionArea);
+      hide(els.statusArea);
       showFeedback(`Draft saved${result?.savedAt ? ` (${result.savedAt})` : ""}.`, false);
-      renderStatusAndActions({
-        status: STUB_PUBLISHED_BY_DATE[state.selectedDate] ? "both" : "draft",
-        message: STUB_PUBLISHED_BY_DATE[state.selectedDate]
-            ? "Published results and a draft both exist for this date."
-            : "A draft already exists for this date."
-      });
+      syncDraftActionButtons();
     } catch (err) {
       console.error(err);
       showFeedback(err.message || "Could not save draft.", true);

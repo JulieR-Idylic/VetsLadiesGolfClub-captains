@@ -28,10 +28,13 @@ function fmtWeekHeading(iso) {
 }
 
 function fmtCurrency(v) {
-  const n = Number(v);
-  if (!Number.isFinite(n) || n === 0) return "$0";
-  const hasCents = Math.abs(n % 1) > 0.000001;
-  return "$" + (hasCents ? n.toFixed(2).replace(/\.00$/, "") : String(n));
+  const raw = asStr(v).replace(/[$,]/g, "");
+  if (!raw) return "—";
+
+  const n = Number(raw);
+  if (!Number.isFinite(n)) return "—";
+
+  return `$${n.toFixed(2)}`;
 }
 
 function fmtNumber(v) {

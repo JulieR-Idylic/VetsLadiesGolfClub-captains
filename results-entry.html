@@ -115,7 +115,69 @@
           </p>
         </div>
 
-        <div class="summary-actions">
+        <div class="summary-actions is-hidden" aria-hidden="true"></div>
+      </div>
+
+      <div class="results-entry-meta">
+
+        <div class="form-row form-row-captain">
+          <label for="entryGameCaptain" class="entry-meta-label">Game Captain</label>
+          <input
+            id="entryGameCaptain"
+            class="input entry-captain-input entry-meta-value"
+            type="text"
+            name="entryGameCaptain"
+            autocomplete="name"
+            placeholder="Enter Game Captain name"
+          />
+        </div>
+
+        <div class="entry-meta-inline">
+
+          <div class="entry-meta-pair">
+            <span class="entry-meta-label">Date</span>
+            <span id="entryDateDisplay" class="entry-meta-value"></span>
+          </div>
+
+          <div class="entry-meta-pair">
+            <span class="entry-meta-label">Game</span>
+            <span id="entryGameDisplay" class="entry-meta-value"></span>
+          </div>
+
+        </div>
+
+    </div>
+
+      <div class="tool-actions entry-toolbar">
+        <div class="entry-toolbar-left">
+          <button
+            id="addPlayerRowBtn"
+            class="btn btn-secondary"
+            type="button"
+            disabled
+          >
+            Add Player Row
+          </button>
+
+          <button
+            id="startOverBtn"
+            class="btn btn-secondary is-hidden"
+            type="button"
+          >
+            Start Over from Roster
+          </button>
+        </div>
+
+        <div class="entry-toolbar-right">
+          <button
+            id="publishResultsBtn"
+            class="btn btn-primary"
+            type="button"
+            disabled
+          >
+            Publish
+          </button>
+
           <button
             id="saveDraftBtn"
             class="btn btn-secondary"
@@ -124,71 +186,7 @@
           >
             Save Draft
           </button>
-
-          <button
-            id="publishResultsBtn"
-            class="btn"
-            type="button"
-            disabled
-          >
-            Publish
-          </button>
         </div>
-      </div>
-
-      <div class="results-entry-meta">
-        <div class="form-row">
-          <label for="entryGameCaptain">Game Captain</label>
-          <input
-            id="entryGameCaptain"
-            class="input"
-            type="text"
-            name="entryGameCaptain"
-            autocomplete="name"
-            placeholder="Enter Game Captain name"
-          />
-        </div>
-
-        <div class="form-row">
-          <label for="entryDateDisplay">Date</label>
-          <input
-            id="entryDateDisplay"
-            class="input"
-            type="text"
-            name="entryDateDisplay"
-            readonly
-          />
-        </div>
-
-        <div class="form-row">
-          <label for="entryGameDisplay">Game</label>
-          <input
-            id="entryGameDisplay"
-            class="input"
-            type="text"
-            name="entryGameDisplay"
-            readonly
-          />
-        </div>
-      </div>
-
-      <div class="tool-actions">
-        <button
-          id="addPlayerRowBtn"
-          class="btn btn-secondary"
-          type="button"
-          disabled
-        >
-          Add Player Row
-        </button>
-
-        <button
-          id="startOverBtn"
-          class="btn btn-secondary is-hidden"
-          type="button"
-        >
-          Start Over from Roster
-        </button>
       </div>
 
       <div id="feedbackSection" class="is-hidden" aria-label="Entry feedback">
@@ -205,15 +203,12 @@
               <th>Action</th>
               <th>Name</th>
               <th>Holes</th>
-              <th>Flight</th>
-              <th class="num">Gross</th>
-              <th class="num">Adjustment</th>
-              <th class="num">Adj Gross</th>
-              <th class="num">Handicap</th>
-              <th class="num">Net</th>
+              <th>Adj Gross</th>
+              <th>Handicap</th>
+              <th>Net</th>
               <th>Payout Type</th>
-              <th class="num">Place</th>
-              <th class="num">Winnings</th>
+              <th>Place</th>
+              <th>Winnings</th>
             </tr>
           </thead>
           <tbody id="resultsEntryTableBody">

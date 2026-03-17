@@ -407,3 +407,184 @@ body.modal-open {
 .results-entry-grid td:nth-child(12) {
   min-width: 105px;
 }
+
+/* ==============================
+   Results Entry P2 polish
+   ============================== */
+.results-entry-meta {
+  display: grid;
+  gap: 0.85rem;
+  margin-bottom: 0.85rem;
+}
+
+.form-row-captain {
+  max-width: 320px;
+}
+
+.entry-captain-input {
+  max-width: 320px;
+}
+
+.entry-meta-inline {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.entry-meta-pair {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.entry-meta-label {
+  min-width: 3.2rem;
+  font-weight: 700;
+}
+
+.entry-meta-value {
+  font-size: 1rem;
+  font-weight: 400;
+  color: #111;
+}
+
+.entry-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin: 0.35rem 0 0.75rem;
+}
+
+.entry-toolbar-left,
+.entry-toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+#publishResultsBtn.btn-primary {
+  background: #111;
+  color: #fff;
+  border-color: #111;
+}
+
+#publishResultsBtn.btn-primary:disabled {
+  background: rgba(0,0,0,0.06);
+  color: rgba(0,0,0,0.38);
+  border-color: rgba(0,0,0,0.14);
+  cursor: not-allowed;
+}
+
+.results-entry-grid {
+  min-width: 980px;
+}
+
+.results-entry-grid th:nth-child(1),
+.results-entry-grid td:nth-child(1) {
+  min-width: 88px;
+}
+
+.results-entry-grid th:nth-child(2),
+.results-entry-grid td:nth-child(2) {
+  min-width: 150px;
+}
+
+.results-entry-grid th:nth-child(3),
+.results-entry-grid td:nth-child(3) {
+  min-width: 64px;
+}
+
+.results-entry-grid th:nth-child(4),
+.results-entry-grid td:nth-child(4),
+.results-entry-grid th:nth-child(5),
+.results-entry-grid td:nth-child(5),
+.results-entry-grid th:nth-child(6),
+.results-entry-grid td:nth-child(6) {
+  min-width: 86px;
+}
+
+.results-entry-grid th:nth-child(7),
+.results-entry-grid td:nth-child(7) {
+  min-width: 104px;
+}
+
+.results-entry-grid th:nth-child(8),
+.results-entry-grid td:nth-child(8) {
+  min-width: 70px;
+}
+
+.results-entry-grid th:nth-child(9),
+.results-entry-grid td:nth-child(9) {
+  min-width: 78px;
+}
+
+@media (max-width: 700px) {
+  .entry-toolbar {
+    align-items: stretch;
+  }
+
+  .entry-toolbar-left,
+  .entry-toolbar-right {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .entry-toolbar-right {
+    justify-content: flex-end;
+  }
+
+  .results-entry-grid {
+    min-width: 0;
+  }
+
+  .results-entry-grid,
+  .results-entry-grid thead,
+  .results-entry-grid tbody,
+  .results-entry-grid th,
+  .results-entry-grid td,
+  .results-entry-grid tr {
+    display: block;
+    width: 100%;
+  }
+
+  .results-entry-grid thead {
+    display: none;
+  }
+
+  .results-entry-grid tbody tr {
+    border-top: 1px solid rgba(0,0,0,0.10);
+    padding: 0.35rem 0;
+  }
+
+  .results-entry-grid tbody td {
+    display: block;
+    border-top: 0;
+    padding: 0.35rem 0;
+    white-space: normal;
+  }
+
+  .results-entry-grid tbody td::before {
+    content: attr(data-label);
+    display: block;
+    margin: 0 0 0.25rem 0;
+    font-weight: 700;
+    text-align: left;
+  }
+
+  .results-entry-grid tbody td[data-label="Action"]::before {
+    display: none;
+  }
+
+  .results-entry-grid .results-grid-input,
+  .results-entry-grid .btn-compact {
+    width: 100%;
+    min-height: 2.75rem;
+  }
+
+  .results-entry-grid .btn-compact {
+    margin-bottom: 0.1rem;
+  }
+}
